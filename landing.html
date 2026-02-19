@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Landing – Tu Producto</title>
+  <style>
+    :root{
+      --bg1:#e9f4ee;
+      --bg2:#cfe6d8;
+      --text:#163b2a;
+      --muted:#3f6c57;
+      --card:#ffffffcc;
+      --stroke:#ffffffa6;
+      --brand:#2f6f4f;
+      --brand2:#3f8a64;
+      --shadow: 0 18px 45px rgba(14, 44, 30, .12);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 700px at 15% 20%, #ffffff 0%, var(--bg1) 55%, var(--bg2) 100%);
+      overflow-x:hidden;
+    }
+
+    /* Fondo con ondas */
+    .bg-waves{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.55;
+      filter: blur(.2px);
+      background:
+        radial-gradient(900px 600px at 85% 35%, rgba(63,138,100,.18), transparent 60%),
+        radial-gradient(650px 450px at 25% 80%, rgba(47,111,79,.16), transparent 60%);
+    }
+    .bg-waves:before, .bg-waves:after{
+      content:"";
+      position:absolute;
+      left:-10%;
+      right:-10%;
+      height:55%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      transform: rotate(-10deg);
+      top: 28%;
+      opacity:.55;
+    }
+    .bg-waves:after{
+      top: 43%;
+      opacity:.35;
+      transform: rotate(-12deg);
+    }
+
+    /* Layout */
+    .wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 18px 80px;
+    }
+
+    /* Navbar */
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 10px 8px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 800;
+      letter-spacing:.3px;
+    }
+    .logo-badge{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 10px 25px rgba(47,111,79,.25);
+    }
+    .nav-links{
+      display:flex;
+      gap:22px;
+      align-items:center;
+      color: var(--muted);
+      font-weight:600;
+    }
+    .nav-links a{
+      text-decoration:none;
+      color:inherit;
+      opacity:.9;
+    }
+    .nav-links a:hover{opacity:1}
+    .btn{
+      border:0;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn-primary{
+      color:white;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 14px 35px rgba(47,111,79,.22);
+    }
+    .btn-primary:hover{box-shadow: 0 16px 40px rgba(47,111,79,.28)}
+    .btn-ghost{
+      background: rgba(255,255,255,.65);
+      color: var(--brand);
+      border: 1px solid rgba(47,111,79,.18);
+      backdrop-filter: blur(8px);
+    }
+    .btn-ghost:hover{opacity:.95}
+
+    /* Hero */
+    .hero{
+      margin-top: 42px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 44px;
+      align-items:center;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(47,111,79,.14);
+      color: var(--muted);
+      font-weight: 700;
+      width: fit-content;
+      box-shadow: 0 10px 25px rgba(14, 44, 30, .06);
+      backdrop-filter: blur(8px);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--brand2);
+      box-shadow: 0 0 0 5px rgba(63,138,100,.18);
+    }
+    h1{
+      margin: 18px 0 10px;
+      font-size: clamp(38px, 4.5vw, 62px);
+      line-height: 1.02;
+      letter-spacing: -1.2px;
+    }
+    h1 .accent{
+      color: var(--brand);
+    }
+    .sub{
+      margin: 14px 0 22px;
+      max-width: 56ch;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+    .cta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .trust{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-top: 18px;
+      color: rgba(22,59,42,.65);
+      font-weight: 650;
+      font-size: 13px;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.55);
+      box-shadow: 0 10px 20px rgba(14,44,30,.06);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Product Card */
+    .product-card{
+      position:relative;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 26px;
+      backdrop-filter: blur(10px);
+      min-height: 520px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+    }
+    .product-card:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(63,138,100,.22), transparent 55%),
+        radial-gradient(circle at 70% 60%, rgba(47,111,79,.18), transparent 55%);
+      transform: rotate(14deg);
+      opacity:.75;
+    }
+    .product{
+      position:relative;
+      width:min(360px, 92%);
+      transform: translateY(10px);
+      filter: drop-shadow(0 18px 30px rgba(14,44,30,.18));
+    }
+    .product img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .badge{
+      position:absolute;
+      top:18px; left:18px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(47,111,79,.12);
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Features */
+    .features{
+      margin-top: 44px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .feat{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: 0 12px 28px rgba(14,44,30,.07);
+      backdrop-filter: blur(10px);
+    }
+    .feat h3{
+      margin: 10px 0 6px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .feat p{
+      margin:0;
+      color: rgba(22,59,42,.72);
+      line-height:1.45;
+      font-size: 14px;
+    }
+    .icon{
+      width:40px;height:40px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(47,111,79,.14), rgba(63,138,100,.18));
+      border: 1px solid rgba(47,111,79,.14);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      color: var(--brand);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns: 1fr; gap: 22px;}
+      .product-card{min-height: 420px;}
+      .features{grid-template-columns: 1fr; }
+      .nav-links{display:none;}
+    }
+
+    /* SLIDER */
+    .product-slider{
+    position:relative;
+    width:min(360px, 92%);
+    height:420px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    }
+
+    .slides{
+    display:flex;
+    width:100%;
+    height:100%;
+    transition: transform .7s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .slide{
+    min-width:100%;
+    object-fit:contain;
+    opacity:.3;
+    transform:scale(1.25);
+    transition:.4s;
+    }
+
+    .slide.active{
+    opacity:1;
+    transform:scale(1.3);
+    }
+
+    /* botones */
+    .slider-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,.6);
+    border:none;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:22px;
+    font-weight:bold;
+    backdrop-filter:blur(6px);
+    z-index:2;
+    }
+
+    .prev{ left:10px; }
+    .next{ right:10px; }
+
+    /* dots */
+    .dots{
+    position:absolute;
+    bottom:10px;
+    display:flex;
+    gap:8px;
+    }
+
+    .dots .dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#9bbfae;
+    cursor:pointer;
+    transition:.3s;
+    }
+    .dots .dot.active{
+    width:20px;
+    border-radius:10px;
+    background:#2f6f4f;
+    }
+
+    /* EARLY ACCESS */
+    .early-access{
+      margin-top: 26px;
+      padding: 20px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.6);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 30px rgba(14,44,30,.08);
+      animation: fadeUp .6s ease forwards;
+    }
+
+    .early-title{
+      margin:0 0 12px;
+      font-weight:700;
+      color: var(--brand);
+    }
+
+    .email-form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .email-form input{
+      flex:1;
+      min-width:220px;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid rgba(47,111,79,.18);
+      background: rgba(255,255,255,.9);
+      font-size:14px;
+      outline:none;
+      transition:.2s;
+    }
+
+    .email-form input:focus{
+      border-color: var(--brand2);
+      box-shadow: 0 0 0 4px rgba(63,138,100,.15);
+    }
+
+    .form-message{
+      margin-top:10px;
+      font-size:13px;
+      font-weight:600;
+      color: var(--brand);
+      min-height:18px;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform: translateY(10px);}
+      to{opacity:1; transform: translateY(0);}
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="bg-waves"></div>
+
+  <div class="wrap">
+    <header class="nav">
+      <div class="logo">
+        <div class="logo-badge"></div>
+        <div>STEPLI</div>
+      </div>
+
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <a class="btn btn-primary" href="#get-started">Get Started</a>
+    </header>
+
+    <main id="home" class="hero">
+      <section>
+        <div class="kicker"><span class="dot"></span> Nuevo • Diseño modular</div>
+
+        <h1>
+          Un <span class="accent">compañero</span><br/>
+          con personalidad
+        </h1>
+
+        <p class="sub">
+          Presenta tu producto con una estética limpia y moderna. Cambia el texto por tu propuesta de valor:
+          qué hace, para quién es y por qué es diferente.
+        </p>
+
+        <div class="cta">
+          <a class="btn btn-primary" href="#get-started">Empezar ahora</a>
+          <a class="btn btn-ghost" href="#features">Ver características</a>
+        </div>
+
+        <div class="trust">
+          <span class="pill">⚡ Rápido de integrar</span>
+          <span class="pill">🛡️ Enfoque en privacidad</span>
+          <span class="pill">📈 Medible</span>
+        </div>
+
+        <div class="early-access">
+          <p class="early-title">🎁 Consigue el primer dispositivo con <strong>oferta exclusiva</strong></p>
+
+          <form id="emailForm" class="email-form">
+            <input type="email" id="email" placeholder="Tu correo electrónico" required>
+            <button type="submit" class="btn btn-primary">Reservar oferta</button>
+          </form>
+
+          <p id="formMessage" class="form-message"></p>
+        </div>
+
+      </section>
+
+    <aside class="product-card" aria-label="Vista del producto">
+    <div class="badge">Mockup</div>
+
+    <div class="product-slider">
+
+        <button class="slider-btn prev">‹</button>
+        <button class="slider-btn next">›</button>
+
+        <div class="slides">
+        <img src="diseño.png" class="slide active">
+        <img src="diseño_4.png" class="slide">
+        <img src="diseño_2.png" class="slide">
+        <img src="diseño_3.png" class="slide">
+        
+        </div>
+
+        <div class="dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        </div>
+
+    </div>
+    </aside>
+
+    <section id="features" class="features" aria-label="Características">
+      <div class="feat">
+        <div class="icon">1</div>
+        <h3>Interfaz clara</h3>
+        <p>Diseño pensado para comunicar valor en segundos: titular, CTA y un visual potente.</p>
+      </div>
+      <div class="feat">
+        <div class="icon">2</div>
+        <h3>Estilo verde suave</h3>
+        <p>Gradientes y sombras delicadas para un look “premium” sin recargar la página.</p>
+      </div>
+      <div class="feat">
+        <div class="icon">3</div>
+        <h3>Listo para iterar</h3>
+        <p>Todo en un solo archivo. Cambias colores, textos y el mockup en 2 minutos.</p>
+      </div>
+    </section>
+
+    <section id="about" style="margin-top:34px; color:rgba(22,59,42,.75);">
+      <p style="max-width:78ch; line-height:1.55; margin:0; background:rgba(255,255,255,.45); padding:16px 18px; border-radius: var(--radius); border:1px solid rgba(255,255,255,.65); box-shadow:0 10px 24px rgba(14,44,30,.06); backdrop-filter: blur(10px);">
+        Aquí puedes poner una mini historia, para quién está pensado y qué problema resuelve.
+        Si me dices el nombre del producto y 2–3 beneficios clave, te lo dejo con copy definitivo.
+      </p>
+    </section>
+
+    <footer style="margin-top:36px; color:rgba(22,59,42,.55); font-weight:650; font-size:13px;">
+      © <span id="y"></span> Tu Marca · Hecho con amor en verde 🌿
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+        const slides = document.querySelectorAll(".slide");
+        const dots = document.querySelectorAll(".dots .dot");
+        const container = document.querySelector(".slides");
+
+        let index = 0;
+        let interval = null;
+
+        function showSlide(i){
+        index = (i + slides.length) % slides.length;
+
+        container.style.transform = `translateX(-${index * 100}%)`;
+
+        slides.forEach(s => s.classList.remove("active"));
+        dots.forEach(d => d.classList.remove("active"));
+
+        slides[index].classList.add("active");
+        dots[index].classList.add("active");
+        }
+
+        function next(){ showSlide(index+1); }
+        function prev(){ showSlide(index-1); }
+
+        document.querySelector(".next").onclick = next;
+        document.querySelector(".prev").onclick = prev;
+
+        dots.forEach((d,i)=> d.onclick = ()=> showSlide(i));
+
+        /* AUTO SLIDE */
+        function start(){
+        interval = setInterval(next, 3500);
+        }
+        function stop(){
+        clearInterval(interval);
+        }
+
+        document.querySelector(".product-slider").addEventListener("mouseenter", stop);
+        document.querySelector(".product-slider").addEventListener("mouseleave", start);
+
+        start();
+</script>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxbwvMS8K7hFyvDqGAGIHmp2GHK6mm1sYGXiWUJ8xrzeQwApLMW5RP2OWOEZ9pA6yI/exec";
+
+document.getElementById("emailForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("formMessage");
+
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify({ email: email }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    message.textContent = "✅ ¡Estás dentro! Te avisaremos antes que a nadie.";
+    document.getElementById("email").value = "";
+  })
+  .catch(error => {
+    message.textContent = "❌ Error al enviar. Inténtalo de nuevo.";
+  });
+});
+</script>
+
+
+</body>
+</html>
