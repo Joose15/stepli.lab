@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mascota Swipe Estados</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    overflow:hidden;
+}
+
+/* CÍRCULO NEGRO */
+.mascota{
+    width:280px;
+    height:280px;
+    background:#000;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    cursor:grab;
+
+    user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+}
+
+.mascota:active{
+    cursor:grabbing;
+}
+
+/* IMÁGENES */
+.estado{
+    position:absolute;
+    width:75%;
+    display:none;
+    animation: parpadeo 4s infinite;
+    transform-origin:center;
+    pointer-events:none;
+    user-drag:none;
+    -webkit-user-drag:none;
+}
+
+.estado.activo{
+    display:block;
+}
+
+/* PARPADEO */
+@keyframes parpadeo {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+}
+
+/* MENÚ (+) */
+.menu{
+    display:none;
+    position:absolute;
+    width:100%;
+    height:100%;
+    justify-content:center;
+    align-items:center;
+}
+
+.menu.activo{
+    display:flex;
+}
+
+.inner{
+    width:180px;
+    height:180px;
+    background:#C6FF00;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.plus{
+    width:60px;
+    height:60px;
+    position:relative;
+}
+
+.plus::before,
+.plus::after{
+    content:"";
+    position:absolute;
+    background:#000;
+}
+
+.plus::before{
+    width:60px;
+    height:8px;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
+}
+
+.plus::after{
+    width:8px;
+    height:60px;
+    left:50%;
+    top:0;
+    transform:translateX(-50%);
+}
+
+</style>
+</head>
+<body>
+
+<div class="mascota" id="mascota">
+
+    <!-- ESTADOS -->
+    <img src="ojos.png" class="estado activo" id="normal">
+    <img src="xx.png" class="estado" id="xx">
+    <img src="love.png" class="estado" id="love">
+    <img src="fire.png" class="estado" id="fire">
+
+    <!-- MENÚ -->
+    <div class="menu" id="menu">
+        <div class="inner">
+            <div class="plus"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+const estados = ["normal", "xx", "love", "fire", "menu"];
+let indice = 0;
+
+let startX = 0;
+let isDragging = false;
+
+const mascota = document.getElementById("mascota");
+
+/* Mostrar estado */
+function mostrarEstado(i){
+    estados.forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.classList.remove("activo");
+    });
+
+    if(estados[i] === "menu"){
+        document.getElementById("menu").classList.add("activo");
+    } else {
+        document.getElementById("menu").classList.remove("activo");
+        document.getElementById(estados[i]).classList.add("activo");
+    }
+}
+
+/* Evitar drag nativo */
+mascota.addEventListener("dragstart", e => e.preventDefault());
+
+/* ===== DESKTOP ===== */
+
+mascota.addEventListener("mousedown", (e)=>{
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX;
+});
+
+window.addEventListener("mouseup", (e)=>{
+    if(!isDragging) return;
+    isDragging = false;
+
+    const diff = e.clientX - startX;
+
+    if(Math.abs(diff) > 40){
+        if(diff < 0){
+            indice = (indice + 1) % estados.length;
+        } else {
+            indice = (indice - 1 + estados.length) % estados.length;
+        }
+        mostrarEstado(indice);
+    }
+});
+
+/* ===== MÓVIL ===== */
+
+mascota.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+});
+
+mascota.addEventListener("touchend", e=>{
+    const endX = e.changedTouches[0].clientX;
+    const diff = endX - startX;
+
+    if(Math.abs(diff) > 40){
+        if(diff < 0){
+            indice = (indice + 1) % estados.length;
+        } else {
+            indice = (indice - 1 + estados.length) % estados.length;
+        }
+        mostrarEstado(indice);
+    }
+});
+
+</script>
+
+</body>
+</html>
